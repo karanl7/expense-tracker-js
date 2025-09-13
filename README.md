@@ -22,8 +22,8 @@ Track income and expenses, set budgets, analyze categories, and visualize data w
 - LocalStorage for persistence.
 
 ## 📸 Screenshots
-![Dashboard](assets/dashboard.png)
-![Chart View](assets/chart.png)
+![Dashboard](/assests/dashborad.png)
+![Chart View](/assets/chart.png)
 
 ## 🚀 Live Demo
 👉 [View Demo](https://your-vercel-or-netlify-link.com)
