@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+            <h1>💰 Expense Tracker</h1>
+            <p>Minimal expense tracking for better financial control</p>
+        </header>
+
+        <section class="budget-section">
+            <h2 class="card-title">Monthly Budget</h2>
+            <div class="budget-controls">
+                <div class="form-group">
+                    <label for="monthlyBudget">Set Monthly Budget</label>
+                    <input type="number" id="monthlyBudget" placeholder="Enter monthly budget" step="0.01">
+                </div>
+                <button class="btn" id="setBudgetBtn">Set Budget</button>
+            </div>
+            <div class="budget-progress" id="budgetProgress" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progressSpent">Spent: $0</span>
+                    <span id="progressRemaining">Remaining: $0</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card balance">
+                <div class="stat-value" id="totalBalance">$0.00</div>
+                <div class="stat-label">Total Balance</div>
+            </div>
+            <div class="stat-card income">
+                <div class="stat-value" id="totalIncome">$0.00</div>
+                <div class="stat-label">Total Income</div>
+            </div>
+            <div class="stat-card expense">
+                <div class="stat-value" id="totalExpenses">$0.00</div>
+                <div class="stat-label">Total Expenses</div>
+            </div>
+        </section>
+
+        <section class="controls">
+            <div class="currency-selector">
+                <label>Currency:</label>
+                <select id="currencySelect">
+                    <option value="USD">$ USD</option>
+                    <option value="EUR">€ EUR</option>
+                    <option value="INR">₹ INR</option>
+                </select>
+            </div>
+             <div class="backup-controls">
+                <button class="btn-secondary btn" id="downloadBackupBtn">Download Backup</button>
+                <button class="btn-secondary btn" id="importBackupBtn">Import Backup</button>
+                <input type="file" id="importFileInput" accept=".json" style="display: none;" />
+            </div>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="list">List</button>
+                <button class="view-btn" data-view="chart">Chart</button>
+                <button class="view-btn" data-view="summary">Summary</button>
+                <button class="view-btn" data-view="insights">Insights</button>
+            </div>
+        </section>
+
+        <section class="filters">
+            <div class="form-group">
+                <label for="searchFilter">Search</label>
+                <input type="text" id="searchFilter" placeholder="Search transactions...">
+            </div>
+            <div class="form-group">
+                <label for="categoryFilter">Filter by Category</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="food">Food</option>
+                    <option value="rent">Rent</option>
+                    <option value="travel">Travel</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <button class="btn-secondary btn" id="clearFilters">Clear</button>
+        </section>
+
+        <section class="card">
+            <div id="listView" class="view-content active">
+                <h2 class="card-title">Transactions</h2>
+                <div id="transactionsList"></div>
+            </div>
+            
+            <div id="chartView" class="view-content">
+                <h2 class="card-title">Expenses by Category</h2>
+                <div class="chart-container">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+            
+            <div id="summaryView" class="view-content">
+                <h2 class="card-title">Monthly Summary</h2>
+                <div id="monthlySummary" class="summary-grid"></div>
+            </div>
+            
+            <div id="insightsView" class="view-content">
+                <h2 class="card-title">Smart Insights</h2>
+                <div id="insightsContent"></div>
+            </div>
+        </section>
+    </div>
+
+    <button id="quickAddBtn" class="fab">+</button>
+
+    <div id="addTransactionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h2 class="card-title">Add Transaction</h2>
+            <form id="transactionForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" required placeholder="Enter description">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select id="type" required>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" step="0.01" required placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select category</option>
+                            <option value="food">Food</option>
+                            <option value="rent">Rent</option>
+                            <option value="travel">Travel</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isRecurring">
+                    <label for="isRecurring">Mark as recurring (monthly)</label>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn">Add Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
