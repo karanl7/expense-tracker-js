@@ -22,11 +22,11 @@ Track income and expenses, set budgets, analyze categories, and visualize data w
 - LocalStorage for persistence.
 
 ## 📸 Screenshots
-![Dashboard](assets/dashboard.png)
-![Chart View](assets/chart.png)
+![Dashboard](/assets/dashboard.png)
+![Chart View](/assets/chart.png)
 
 ## 🚀 Live Demo
-👉 [View Demo](https://your-vercel-or-netlify-link.com)
+👉 [View Demo](https://expense-tracker-js-two.vercel.app/)
 
 ## 📖 Learnings
 - Implemented secure DOM rendering to prevent XSS.
